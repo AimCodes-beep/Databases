@@ -1,0 +1,36 @@
+MONGODB
+
+MONGODB ESSENTIAL COMMANDS
+use HobNob  #used for creating databases
+db.createCollection("Employees") #usde for creating collection
+db.insertOne()  #used for inserting Users
+db.Employees.updateMany({},{$inc:{salary:50000}})   #used for updating all employees salary
+
+db.Employees.aggregate([{$group:{_id:"$department_id",totalemployees:{$sum:1}}}])  //used for grouping info together
+
+///conditional filtering
+db.Employees.find({$and:[{designation:"Financial Analyst"},{salary:{$gte:100000}}]})  ///give result if both conditions are true
+
+db.Employees.find({$or:[{designation:"Financial Analyst"},{salary:{$gte:100000}}]})  ////gives result if one of the query is true
+
+
+
+**********SOME ANALYSIS ***************************
+
+db.Employees.aggregate([{$group:{_id:"$designation",average:{$avg:"$salary"}}}])  ///DESIGNATION WISE AVERAGE SALARY
+
+db.Employees.aggregate([{$group:{_id:"$department_id",maximum:{$max:"$salary"}}}])   ///DEPARTMENT WISE MINIMUM SALARY
+
+db.Employees.aggregate([{$group:{_id:"$department_id",maximum:{$max:"$salary"}}},{$sort:{department_id:-1}}])  ///applyinh sortinh
+
+db.Employees.aggregate([{$lookup:{from:"Departments",localField:"department_id",foreignField:"department_id",as:"Emp Departments"}}])  ///JOINING TWO TABLES
+
+db.Employees.aggregate([{$project:{name:1,Year:{$year:"$joinDate"},Month:{$month:"$joinDate"}}}])   ///EXTRACTING OUT MONTH AND YEAR OF EMPLOYEES JOINING
+
+db.Employees.aggregate([{$project:{name:1,selectedskill:{$arrayElemAt:["$skills",2]}}}])   //EXTRACT OUT THE EMPLOYEE SKILL AT POSITION NUM 3
+
+db.Employees.aggregate([{$project:{name:1,countskills:{$size:"$skills"}}}]) //COUNTING EMPLOYEES SKILLS
+
+ 
+ 
+
